@@ -1,0 +1,36 @@
+{
+    "name": "zelenin/message-bus",
+    "description": "Lightweight message bus",
+    "keywords": [
+        "message bus"
+    ],
+    "homepage": "https://github.com/zelenin/message-bus",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Aleksandr Zelenin",
+            "email": "aleksandr@zelenin.me",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/zelenin/message-bus/issues",
+        "source": "https://github.com/zelenin/message-bus"
+    },
+    "require": {
+        "php": ">=7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Zelenin\\MessageBus\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Zelenin\\MessageBus\\Test\\": "tests"
+        }
+    }
+}
