@@ -8,7 +8,6 @@ use Psr\Container\ContainerInterface;
 use RuntimeException;
 use Zelenin\MessageBus\MiddlewareBus\Middleware\HandlerMiddleware\Handler;
 
-
 final class ContainerLocator implements Locator
 {
     /**
