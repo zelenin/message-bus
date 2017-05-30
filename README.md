@@ -1,4 +1,4 @@
-# Message bus
+# Message bus [![Build Status](https://travis-ci.org/zelenin/message-bus.svg?branch=master)](https://travis-ci.org/zelenin/message-bus) [![Coverage Status](https://coveralls.io/repos/github/zelenin/message-bus/badge.svg?branch=master)](https://coveralls.io/github/zelenin/message-bus?branch=master)
 
 ## Installation
 
