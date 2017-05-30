@@ -4,10 +4,9 @@ declare(strict_types=1);
 namespace Zelenin\MessageBus\Test\MiddlewareBus;
 
 use PHPUnit\Framework\TestCase;
-use SplQueue;
 use Zelenin\MessageBus\MiddlewareBus\FinalMiddleware;
-use Zelenin\MessageBus\MiddlewareBus\Middleware;
 use Zelenin\MessageBus\MiddlewareBus\MiddlewareDispatcher;
+use Zelenin\MessageBus\MiddlewareBus\MiddlewareStack;
 use Zelenin\MessageBus\Test\Provider\MiddlewareA;
 use Zelenin\MessageBus\Test\Provider\MiddlewareB;
 use Zelenin\MessageBus\Test\Provider\MiddlewareC;
@@ -24,13 +23,7 @@ final class MiddlewareDispatcherTest extends TestCase
             new MiddlewareD(),
         ];
 
-        $stack = new SplQueue();
-        array_walk($middlewares, function (Middleware $middleware) use ($stack) {
-            $stack->push($middleware);
-        });
-        $stack->rewind();
-
-        $dispatcher = new MiddlewareDispatcher($stack, new FinalMiddleware());
+        $dispatcher = new MiddlewareDispatcher(new MiddlewareStack($middlewares), new FinalMiddleware());
 
         $message = new \stdClass();
 
@@ -49,13 +42,7 @@ final class MiddlewareDispatcherTest extends TestCase
             new MiddlewareD(),
         ];
 
-        $stack = new SplQueue();
-        array_walk($middlewares, function (Middleware $middleware) use ($stack) {
-            $stack->push($middleware);
-        });
-        $stack->rewind();
-
-        $dispatcher = new MiddlewareDispatcher($stack, new FinalMiddleware());
+        $dispatcher = new MiddlewareDispatcher(new MiddlewareStack($middlewares), new FinalMiddleware());
 
         $message = new \stdClass();
 

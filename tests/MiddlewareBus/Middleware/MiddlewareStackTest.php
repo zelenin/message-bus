@@ -23,11 +23,14 @@ final class MiddlewareStackTest extends TestCase
 
         $middlewareStack = new MiddlewareStack($middlewares);
 
-        $message = new \stdClass();
+        $middlewareStack->reset();
 
-        $context = $middlewareStack($message);
+        $count = 0;
+        while ($middlewareStack->isValid()) {
+            $middlewareStack->next();
+            $count++;
+        }
 
-        $this->assertEquals(count($middlewares), $context->value('i'));
-        $this->assertEquals('CDBA', $context->value('order'));
+        $this->assertEquals(count($middlewares), $count);
     }
 }
