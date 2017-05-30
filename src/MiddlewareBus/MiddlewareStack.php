@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Zelenin\MessageBus\MiddlewareBus;
 
 use SplQueue;
-use Zelenin\MessageBus\Context;
 
 final class MiddlewareStack
 {
@@ -12,11 +11,6 @@ final class MiddlewareStack
      * @var SplQueue
      */
     private $stack;
-
-    /**
-     * @var Middleware
-     */
-    private $dispatcher;
 
     /**
      * @param Middleware[] $middlewares
@@ -28,19 +22,29 @@ final class MiddlewareStack
         array_walk($middlewares, function (Middleware $middleware) {
             $this->stack->push($middleware);
         });
+    }
 
-        $this->dispatcher = new MiddlewareDispatcher($this->stack, new FinalMiddleware());
+    public function reset()
+    {
+        $this->stack->rewind();
     }
 
     /**
-     * @param object $message
-     *
-     * @return Context
+     * @return bool
      */
-    public function __invoke($message): Context
+    public function isValid(): bool
     {
-        $this->stack->rewind();
+        return $this->stack->valid();
+    }
 
-        return call_user_func($this->dispatcher, $message);
+    /**
+     * @return Middleware
+     */
+    public function next(): Middleware
+    {
+        $middleware = $this->stack->current();
+        $this->stack->next();
+
+        return $middleware;
     }
 }

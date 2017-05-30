@@ -9,9 +9,9 @@ use Zelenin\MessageBus\Context;
 final class MiddlewareDispatcher
 {
     /**
-     * @var SplQueue
+     * @var MiddlewareStack
      */
-    private $stack;
+    private $middlewareStack;
 
     /**
      * @var Middleware
@@ -24,14 +24,16 @@ final class MiddlewareDispatcher
     private $context;
 
     /**
-     * @param SplQueue $stack
+     * @param MiddlewareStack $middlewareStack
      * @param Middleware $finalMiddleware
      */
-    public function __construct(SplQueue $stack, Middleware $finalMiddleware)
+    public function __construct(MiddlewareStack $middlewareStack, Middleware $finalMiddleware)
     {
-        $this->stack = $stack;
+        $this->middlewareStack = $middlewareStack;
         $this->finalMiddleware = $finalMiddleware;
         $this->context = new Context();
+
+        $middlewareStack->reset();
     }
 
     /**
@@ -39,14 +41,14 @@ final class MiddlewareDispatcher
      */
     public function __invoke($message): Context
     {
-        if (!$this->stack->valid()) {
+        if (!$this->middlewareStack->isValid()) {
             return call_user_func($this->finalMiddleware, $message, $this);
         }
 
-        $middleware = $this->stack->current();
-        $this->stack->next();
+        $nextMiddleware = $this->middlewareStack->next();
 
-        $this->context = call_user_func($middleware, $message, $this);
+        $this->context = $nextMiddleware($message, $this);
+
         return $this->context();
     }
 
