@@ -18,7 +18,8 @@
         "source": "https://github.com/zelenin/message-bus"
     },
     "require": {
-        "php": ">=7.0"
+        "php": ">=7.0",
+        "doctrine/annotations": "~1.2"
     },
     "require-dev": {
         "phpunit/phpunit": "~6.0",
