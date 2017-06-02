@@ -4,7 +4,11 @@ declare(strict_types=1);
 namespace Zelenin\MessageBus\Test\Provider;
 
 use Zelenin\MessageBus\Context;
+use Zelenin\MessageBus\Locator\Annotation\HandlerAnnotation;
 
+/**
+ * @HandlerAnnotation(message=Message::class)
+ */
 final class Handler implements \Zelenin\MessageBus\Handler
 {
     /**
