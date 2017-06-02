@@ -28,11 +28,17 @@ final class AnnotationProvider implements Provider
     private $reader;
 
     /**
+     * @var string
+     */
+    private $busId;
+
+    /**
      * @param string $path
      */
-    public function __construct(string $path)
+    public function __construct(string $path, string $busId = '')
     {
         $this->path = $path;
+        $this->busId = $busId;
         $this->reader = new IndexedReader(new AnnotationReader());
 
         $this->registerLoader();
@@ -58,6 +64,11 @@ final class AnnotationProvider implements Provider
                 if (isset($classAnnotations[HandlerAnnotation::class])) {
                     /** @var HandlerAnnotation $annotation */
                     $annotation = $classAnnotations[HandlerAnnotation::class];
+
+                    if ($this->busId && $annotation->busId !== $this->busId) {
+                        continue;
+                    }
+
                     if (isset($handlers[$annotation->message])) {
                         throw new InvalidArgumentException(sprintf('Handler for "%s" already exists.', $annotation->message));
                     }

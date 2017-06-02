@@ -15,4 +15,9 @@ final class HandlerAnnotation
      * @var string
      */
     public $message;
+
+    /**
+     * @var string
+     */
+    public $busId;
 }
