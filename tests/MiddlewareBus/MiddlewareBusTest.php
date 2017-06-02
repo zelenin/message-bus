@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Zelenin\MessageBus\Test\MiddlewareBus;
 
 use PHPUnit\Framework\TestCase;
+use Zelenin\MessageBus\Locator\MemoryLocator;
 use Zelenin\MessageBus\MiddlewareBus\Middleware\HandlerMiddleware;
-use Zelenin\MessageBus\MiddlewareBus\Middleware\HandlerMiddleware\Locator\MemoryLocator;
 use Zelenin\MessageBus\MiddlewareBus\MiddlewareBus;
 use Zelenin\MessageBus\MiddlewareBus\MiddlewareStack;
 use Zelenin\MessageBus\Test\Provider\Handler;
@@ -38,11 +38,11 @@ final class MiddlewareBusTest extends TestCase
     public function testHandlers()
     {
         $handlers = [
-            \stdClass::class => new Handler()
+            \stdClass::class => new Handler(),
         ];
 
         $middlewares = [
-            new HandlerMiddleware(new MemoryLocator($handlers))
+            new HandlerMiddleware(new MemoryLocator($handlers)),
         ];
 
         $bus = new MiddlewareBus(new MiddlewareStack($middlewares));

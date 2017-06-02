@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Zelenin\MessageBus\MiddlewareBus\Middleware;
 
 use Zelenin\MessageBus\Context;
+use Zelenin\MessageBus\Locator\Locator;
 use Zelenin\MessageBus\MiddlewareBus\Middleware;
-use Zelenin\MessageBus\MiddlewareBus\Middleware\HandlerMiddleware\Locator\Locator;
 use Zelenin\MessageBus\MiddlewareBus\MiddlewareDispatcher;
 
 final class HandlerMiddleware implements Middleware

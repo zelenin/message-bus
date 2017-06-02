@@ -4,9 +4,8 @@ declare(strict_types=1);
 namespace Zelenin\MessageBus\Test\Provider;
 
 use Zelenin\MessageBus\Context;
-use Zelenin\MessageBus\MiddlewareBus\Middleware;
 
-final class Handler implements Middleware\HandlerMiddleware\Handler
+final class Handler implements \Zelenin\MessageBus\Handler
 {
     /**
      * @inheritdoc

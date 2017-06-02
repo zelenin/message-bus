@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Zelenin\MessageBus\MiddlewareBus\Middleware\HandlerMiddleware\Locator;
+namespace Zelenin\MessageBus\Locator;
 
-use Zelenin\MessageBus\MiddlewareBus\Middleware\HandlerMiddleware\Handler;
+use Zelenin\MessageBus\Handler;
 
 interface Locator
 {

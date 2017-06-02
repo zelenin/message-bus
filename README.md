@@ -40,7 +40,21 @@ $message = new CreatePost('Post title', 'Post content');
 $context = $commandBus->handle($message);
 ```
 
-```ContainerLocator``` may be used for [PSR-11 Container](https://github.com/php-fig/container) support.
+ProviderLocator:
+
+```
+$provider = new AnnotationProvider(__DIR__ . '/src');
+if ($isProduction) {
+    $provider = new CacheProvider(__DIR__ . '/data/handlers-cache.php', $provider);
+}
+$locator = new ProviderLocator($provider, new ContainerHandlerResolver($container));
+
+return new MiddlewareBus(new MiddlewareStack([
+    new HandlerMiddleware($locator),
+]));
+```
+
+```ContainerHandlerResolver``` may be used for [PSR-11 Container](https://github.com/php-fig/container) support.
 
 ### Context
 

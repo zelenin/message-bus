@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Zelenin\MessageBus\MiddlewareBus;
 
-use SplQueue;
 use Zelenin\MessageBus\Context;
 
 final class MiddlewareDispatcher

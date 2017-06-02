@@ -1,9 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Zelenin\MessageBus\MiddlewareBus\Middleware\HandlerMiddleware;
-
-use Zelenin\MessageBus\Context;
+namespace Zelenin\MessageBus;
 
 interface Handler
 {

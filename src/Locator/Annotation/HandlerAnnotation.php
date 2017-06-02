@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Zelenin\MessageBus\MiddlewareBus\Middleware\HandlerMiddleware\Locator\Annotation;
+namespace Zelenin\MessageBus\Locator\Annotation;
 
 /**
  * @Annotation

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Zelenin\MessageBus\MiddlewareBus\Middleware\HandlerMiddleware\Locator;
+namespace Zelenin\MessageBus\Locator;
 
 use InvalidArgumentException;
 use RuntimeException;
-use Zelenin\MessageBus\MiddlewareBus\Middleware\HandlerMiddleware\Handler;
+use Zelenin\MessageBus\Handler;
 
 final class MemoryLocator implements Locator
 {

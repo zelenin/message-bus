@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Zelenin\MessageBus\MiddlewareBus\Middleware\HandlerMiddleware\Locator;
+namespace Zelenin\MessageBus\Locator\Provider;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
@@ -13,47 +13,40 @@ use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
 use ReflectionClass;
 use RegexIterator;
-use RuntimeException;
-use Zelenin\MessageBus\MiddlewareBus\Middleware\HandlerMiddleware\Handler;
-use Zelenin\MessageBus\MiddlewareBus\Middleware\HandlerMiddleware\Locator\Annotation\HandlerAnnotation;
+use Zelenin\MessageBus\Locator\Annotation\HandlerAnnotation;
 
-final class AnnotationLocator implements Locator
+final class AnnotationProvider implements Provider
 {
-    /**
-     * @var Reader
-     */
-    private $reader;
-
     /**
      * @var string
      */
     private $path;
 
     /**
-     * @var array
+     * @var Reader
      */
-    private $handlers;
-
-    /**
-     * @var callable
-     */
-    private $handlerResolver;
+    private $reader;
 
     /**
      * @param string $path
-     * @param callable $handlerResolver
      */
-    public function __construct(string $path, callable $handlerResolver)
+    public function __construct(string $path)
     {
-        $this->reader = new IndexedReader(new AnnotationReader());
         $this->path = $path;
-        $this->handlerResolver = $handlerResolver;
+        $this->reader = new IndexedReader(new AnnotationReader());
 
         $this->registerLoader();
+    }
 
+    /**
+     * @return array
+     */
+    public function getHandlers(): array
+    {
         $recursiveIterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($this->path));
         $iterator = new RegexIterator($recursiveIterator, '/^.+\.php$/i', RecursiveRegexIterator::GET_MATCH);
 
+        $handlers = [];
         foreach ($iterator as $filePath) {
             $content = file_get_contents($filePath[0]);
             $className = $this->getClassName($content);
@@ -65,27 +58,15 @@ final class AnnotationLocator implements Locator
                 if (isset($classAnnotations[HandlerAnnotation::class])) {
                     /** @var HandlerAnnotation $annotation */
                     $annotation = $classAnnotations[HandlerAnnotation::class];
-                    if (isset($this->handlers[$annotation->message])) {
+                    if (isset($handlers[$annotation->message])) {
                         throw new InvalidArgumentException(sprintf('Handler for "%s" already exists.', $annotation->message));
                     }
-                    $this->handlers[$annotation->message] = $className;
+                    $handlers[$annotation->message] = $className;
                 }
             }
         }
-    }
 
-    /**
-     * @inheritdoc
-     */
-    public function getHandler($message): Handler
-    {
-        $messageName = get_class($message);
-
-        if (!isset($this->handlers[$messageName])) {
-            throw new RuntimeException(sprintf('No handler for message "%s"', $messageName));
-        }
-
-        return call_user_func($this->handlerResolver, $this->handlers[$messageName]);
+        return $handlers;
     }
 
     /**
@@ -140,10 +121,10 @@ final class AnnotationLocator implements Locator
 
     private function registerLoader()
     {
-        if (file_exists(__DIR__ . '/../../../../../../../../vendor/autoload.php')) {
-            $loader = require __DIR__ . '/../../../../../../../../vendor/autoload.php';
+        if (file_exists(__DIR__ . '/../../../../../../vendor/autoload.php')) {
+            $loader = require __DIR__ . '/../../../../../../vendor/autoload.php';
         } else {
-            $loader = require __DIR__ . '/../../../../../vendor/autoload.php';
+            $loader = require __DIR__ . '/../../../vendor/autoload.php';
         }
 
         AnnotationRegistry::registerLoader([$loader, 'loadClass']);
