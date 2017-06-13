@@ -42,7 +42,7 @@ $context = $commandBus->handle($message);
 
 ProviderLocator:
 
-```
+```php
 $provider = new AnnotationProvider(__DIR__ . '/src');
 if ($isProduction) {
     $provider = new CacheProvider(__DIR__ . '/data/handlers-cache.php', $provider);
