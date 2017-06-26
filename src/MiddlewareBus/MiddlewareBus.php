@@ -9,16 +9,16 @@ use Zelenin\MessageBus\MessageBus;
 final class MiddlewareBus implements MessageBus
 {
     /**
-     * @var MiddlewareDispatcher
+     * @var MiddlewareStack
      */
-    private $dispatcher;
+    private $middlewareStack;
 
     /**
      * @param MiddlewareStack $middlewareStack
      */
     public function __construct(MiddlewareStack $middlewareStack)
     {
-        $this->dispatcher = new MiddlewareDispatcher($middlewareStack, new FinalMiddleware());
+        $this->middlewareStack = $middlewareStack;
     }
 
     /**
@@ -26,6 +26,8 @@ final class MiddlewareBus implements MessageBus
      */
     public function handle($message): Context
     {
-        return call_user_func($this->dispatcher, $message);
+        $dispatcher = new MiddlewareDispatcher($this->middlewareStack, new FinalMiddleware());
+
+        return call_user_func($dispatcher, $message);
     }
 }
