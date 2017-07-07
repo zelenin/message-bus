@@ -9,13 +9,13 @@ The preferred way to install this extension is through [Composer](http://getcomp
 Either run
 
 ```
-php composer.phar require zelenin/message-bus "~0.0.2"
+php composer.phar require zelenin/message-bus "~0.0.3"
 ```
 
 or add
 
 ```
-"zelenin/message-bus": "~0.0.2"
+"zelenin/message-bus": "~0.0.3"
 ```
 
 to the require section of your ```composer.json```

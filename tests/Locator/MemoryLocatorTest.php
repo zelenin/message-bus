@@ -5,6 +5,7 @@ namespace Zelenin\MessageBus\Test\Locator;
 
 use PHPUnit\Framework\TestCase;
 use Zelenin\MessageBus\Locator\MemoryLocator;
+use Zelenin\MessageBus\NullHandler;
 use Zelenin\MessageBus\Test\Provider\Handler;
 use Zelenin\MessageBus\Test\Provider\Message;
 
@@ -24,14 +25,13 @@ final class MemoryLocatorTest extends TestCase
 
     public function testNotFoundHandler()
     {
-        $this->expectException(\RuntimeException::class);
-
         $handler = new Handler();
         $handlers = [
             'message' => $handler,
         ];
 
         $locator = new MemoryLocator($handlers);
-        $locator->getHandler(new Message());
+
+        $this->assertInstanceOf(NullHandler::class, $locator->getHandler(new Message()));
     }
 }

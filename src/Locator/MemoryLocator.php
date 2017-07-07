@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Zelenin\MessageBus\Locator;
 
 use InvalidArgumentException;
-use RuntimeException;
 use Zelenin\MessageBus\Handler;
+use Zelenin\MessageBus\NullHandler;
 
 final class MemoryLocator implements Locator
 {
@@ -36,7 +36,7 @@ final class MemoryLocator implements Locator
         $messageName = get_class($message);
 
         if (!isset($this->handlers[$messageName])) {
-            throw new RuntimeException(sprintf('No handler for message "%s"', $messageName));
+            return new NullHandler();
         }
 
         return $this->handlers[$messageName];

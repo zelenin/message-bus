@@ -5,6 +5,7 @@ namespace Zelenin\MessageBus\Locator\HandlerResolver;
 
 use Psr\Container\ContainerInterface;
 use Zelenin\MessageBus\Handler;
+use Zelenin\MessageBus\NullHandler;
 
 final class ContainerHandlerResolver implements HandlerResolver
 {
@@ -28,6 +29,8 @@ final class ContainerHandlerResolver implements HandlerResolver
      */
     public function getHandler(string $handlerName): Handler
     {
-        return $this->container->get($handlerName);
+        return $this->container->has($handlerName)
+            ? $this->container->get($handlerName)
+            : new NullHandler();
     }
 }
